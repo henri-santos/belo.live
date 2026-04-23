@@ -1,0 +1,21 @@
+{
+  "name": "belo-live",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "mz": "2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "author": {
+    "name": "Hugo Muller-Downing",
+    "email": "npmjs@hugo.sx",
+    "url": "hu.md"
+  },
+  "license": "MIT"
+}
