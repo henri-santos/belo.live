@@ -4,7 +4,6 @@ const http = require('http');
 const url = require('url');
 const { Readable } = require('stream');
 
-// Configuração dos frames em memória
 let original = [];
 let flipped = [];
 
@@ -25,7 +24,7 @@ let flipped = [];
       .join('')
   })
 })().catch((err) => {
-  console.log('Erro ao carregar frames');
+  console.log('Error loading frames');
   console.log(err);
 });
 
@@ -35,16 +34,14 @@ function streamer(stream, opts) {
   let timer;
 
   function tick() {
-    // Limpa o ecrã no terminal do cliente
+    
     stream.push('\u001b[2J\u001b[3J\u001b[H');
 
     const frame = frames[index];
 
-    // Tenta enviar o frame; respeita o backpressure do stream
     const ok = stream.push(frame);
     index = (index + 1) % frames.length;
 
-    // Ajustado para 500ms (meio segundo)
     if (ok) {
       timer = setTimeout(tick, 500);
     } else {
@@ -54,10 +51,8 @@ function streamer(stream, opts) {
     }
   }
 
-  // Inicia o loop
   tick();
 
-  // Função de limpeza
   return () => {
     clearTimeout(timer);
   };
@@ -66,19 +61,18 @@ function streamer(stream, opts) {
 const validateQuery = ({ flip }) => ({ flip: String(flip).toLowerCase() === 'true' });
 
 const server = http.createServer((req, res) => {
-  // Rota de Healthcheck
+
   if (req.url === '/healthcheck') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({ status: 'ok' }));
   }
 
-  // Redireciona se não for um acesso via curl (opcional, mantido conforme original)
   if (
     req.headers &&
     req.headers['user-agent'] &&
     !req.headers['user-agent'].includes('curl')
   ) {
-    res.writeHead(302, { Location: 'https://github.com/' });
+    res.writeHead(302, { Location: 'https://github.com/henri-santos/belo.live' });
     return res.end();
   }
 
